@@ -65,8 +65,12 @@
       font-size: 15px;
       font-weight: 600;
     }
-    .success { color: green; }
-    .error { color: red; }
+    .success {
+      color: green;
+    }
+    .error {
+      color: red;
+    }
     .loader {
       width: 22px;
       height: 22px;
@@ -77,7 +81,11 @@
       animation: spin 0.8s linear infinite;
       display: none;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
   </style>
 </head>
 <body>
@@ -90,7 +98,7 @@
   </div>
 
   <script>
-    const apiUrl = "https://long-sun-7f1ff.abadeerashraf0.workers.dev/";
+    const apiUrl = "https://script.google.com/macros/s/AKfycbwYRwRxlEEOah4yaPBEmev-Myl0LaN8jsRJyxjTvzXzF4q0RW7Be5Y3sn4yUrgfYplb/exec";
 
     async function verifyCode() {
       const code = document.getElementById("code").value.trim();
@@ -112,10 +120,15 @@
         const response = await fetch(apiUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ code })
+          body: JSON.stringify({ code: code })
         });
 
         loader.style.display = "none";
+
+        if (!response.ok) {
+          throw new Error("Server error: " + response.status);
+        }
+
         const data = await response.json();
 
         if (data.status === "success") {
