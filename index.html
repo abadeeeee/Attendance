@@ -20,10 +20,7 @@
       text-align: center;
       width: 350px;
     }
-    h2 {
-      color: #333;
-      margin-bottom: 20px;
-    }
+    h2 { color: #333; margin-bottom: 20px; }
     input {
       width: 90%;
       padding: 10px;
@@ -75,8 +72,7 @@
       resultDiv.style.color = "black";
 
       try {
-        // استخدم CORS Proxy لتخطي القيود
-        const res = await fetch("https://cors-anywhere.herokuapp.com/https://script.google.com/macros/s/AKfycbxE_l82fvgtPmfI8ppo7-ax2DkFPZ-e5UKNknAbPfewjGp2-rpylf8RFBOLEIwe7iY56w/exec", {
+        const res = await fetch("https://script.google.com/macros/s/AKfycbwBkpZ7kSUZAnlItRiqnTiyTeKrUaT0XNUPzG2JeOsUnpkYAMCtMt1CLNYxuxt4wJxc/exec", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ code })
