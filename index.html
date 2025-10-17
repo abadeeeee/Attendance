@@ -14,6 +14,7 @@
       height: 100vh;
       margin: 0;
     }
+
     .container {
       background: #fff;
       padding: 30px 40px;
@@ -21,7 +22,9 @@
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
       text-align: center;
       width: 340px;
+      transition: all 0.3s ease;
     }
+
     .container h2 {
       margin-bottom: 20px;
       color: #222;
@@ -32,6 +35,7 @@
       justify-content: center;
       gap: 8px;
     }
+
     input {
       width: 100%;
       padding: 12px;
@@ -42,10 +46,12 @@
       outline: none;
       transition: 0.2s;
     }
+
     input:focus {
       border-color: #007bff;
       box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
     }
+
     button {
       width: 100%;
       background: #007bff;
@@ -57,20 +63,25 @@
       cursor: pointer;
       transition: background 0.3s;
     }
+
     button:hover {
       background: #0056b3;
     }
+
     .message {
       margin-top: 15px;
       font-size: 15px;
       font-weight: 600;
     }
+
     .success {
       color: green;
     }
+
     .error {
       color: red;
     }
+
     .loader {
       width: 22px;
       height: 22px;
@@ -81,6 +92,7 @@
       animation: spin 0.8s linear infinite;
       display: none;
     }
+
     @keyframes spin {
       to {
         transform: rotate(360deg);
@@ -92,15 +104,15 @@
   <div class="container">
     <h2>🎓 Student Attendance</h2>
     <input type="text" id="code" placeholder="Enter your code" />
-    <button onclick="verifyCode()">Submit</button>
+    <button onclick="sendCode()">Submit</button>
     <div class="loader" id="loader"></div>
     <div id="message" class="message"></div>
   </div>
 
   <script>
-    const apiUrl = "https://script.google.com/macros/s/AKfycbwYRwRxlEEOah4yaPBEmev-Myl0LaN8jsRJyxjTvzXzF4q0RW7Be5Y3sn4yUrgfYplb/exec";
+    const apiUrl = "https://script.google.com/macros/s/AKfycbxSn9a7Rx9kbxeMKI_nn4luitxH0SZnnRBdum-XIAnRrf0_ZDN88kufNnCe__RTy2Y/exec";
 
-    async function verifyCode() {
+    async function sendCode() {
       const code = document.getElementById("code").value.trim();
       const msg = document.getElementById("message");
       const loader = document.getElementById("loader");
@@ -120,20 +132,16 @@
         const response = await fetch(apiUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ code: code })
+          body: JSON.stringify({ code }),
         });
 
-        loader.style.display = "none";
-
-        if (!response.ok) {
-          throw new Error("Server error: " + response.status);
-        }
-
         const data = await response.json();
+        loader.style.display = "none";
 
         if (data.status === "success") {
           msg.textContent = "✅ " + data.message;
           msg.classList.add("success");
+          document.getElementById("code").value = "";
         } else {
           msg.textContent = "❌ " + data.message;
           msg.classList.add("error");
