@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>College Attendance System</title>
+  <meta charset="UTF-8" />
+  <title>Student Attendance</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -55,7 +55,7 @@
 <body>
   <div class="container">
     <h2>🎓 Student Attendance</h2>
-    <input type="text" id="code" placeholder="Enter your code">
+    <input type="text" id="code" placeholder="Enter your code" />
     <button onclick="markAttendance()">Submit</button>
     <div id="result"></div>
   </div>
@@ -75,22 +75,25 @@
       resultDiv.style.color = "black";
 
       try {
-        const res = await fetch("https://script.google.com/macros/s/AKfycbzuQlqv4NyPd6k4ifG2i-MchvZdD-9PJPgX6Ot84jeoZm-iH2SyFhdQuYIRbv8oIx8pxA/exec", {
+        // استخدم CORS Proxy لتخطي القيود
+        const res = await fetch("https://cors-anywhere.herokuapp.com/https://script.google.com/macros/s/AKfycbxE_l82fvgtPmfI8ppo7-ax2DkFPZ-e5UKNknAbPfewjGp2-rpylf8RFBOLEIwe7iY56w/exec", {
           method: "POST",
-          body: JSON.stringify({ code }),
           headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code })
         });
 
-        const text = await res.text();
-        if (text.includes("✅")) {
+        const data = await res.json();
+        resultDiv.innerText = data.message;
+
+        if (data.status === "success") {
           resultDiv.style.color = "green";
+        } else if (data.status === "warning") {
+          resultDiv.style.color = "orange";
         } else {
           resultDiv.style.color = "red";
         }
-        resultDiv.innerText = text;
-
       } catch (err) {
-        resultDiv.innerText = "❌ Error connecting to the server.";
+        resultDiv.innerText = "❌ Error connecting to server: " + err.message;
         resultDiv.style.color = "red";
       }
     }
