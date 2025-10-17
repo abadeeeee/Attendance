@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>College Attendance System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 350px;
+    }
+    h2 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    input {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🎓 Student Attendance</h2>
+    <input type="text" id="code" placeholder="Enter your code">
+    <button onclick="markAttendance()">Submit</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    async function markAttendance() {
+      const code = document.getElementById("code").value.trim();
+      const resultDiv = document.getElementById("result");
+
+      if (!code) {
+        resultDiv.innerText = "⚠️ Please enter your code.";
+        resultDiv.style.color = "red";
+        return;
+      }
+
+      resultDiv.innerText = "⏳ Recording attendance...";
+      resultDiv.style.color = "black";
+
+      try {
+        const res = await fetch("https://script.google.com/macros/s/AKfycbzuQlqv4NyPd6k4ifG2i-MchvZdD-9PJPgX6Ot84jeoZm-iH2SyFhdQuYIRbv8oIx8pxA/exec", {
+          method: "POST",
+          body: JSON.stringify({ code }),
+          headers: { "Content-Type": "application/json" },
+        });
+
+        const text = await res.text();
+        if (text.includes("✅")) {
+          resultDiv.style.color = "green";
+        } else {
+          resultDiv.style.color = "red";
+        }
+        resultDiv.innerText = text;
+
+      } catch (err) {
+        resultDiv.innerText = "❌ Error connecting to the server.";
+        resultDiv.style.color = "red";
+      }
+    }
+  </script>
+</body>
+</html>
